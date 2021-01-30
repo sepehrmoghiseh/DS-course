@@ -163,7 +163,7 @@ def doMath(op, op1, op2):
         return op1 * op2
     elif op == "+":
         return op1 + op2
-    else:
+    elif op == "-":
         return op1 - op2
 
 
@@ -173,8 +173,34 @@ def print_(head):
         print((curr.data), end="")
         curr = curr.next
 
-if __name__=='__main__':
-    d = {}
+
+def insert(hash_table, key, value):
+    hash_key = hash(key) % len(hash_table)
+    key_exists = False
+    bucket = hash_table[hash_key]
+    for i, kv in enumerate(bucket):
+        k, v = kv
+        if key == k:
+            key_exists = True
+            break
+    if key_exists:
+        bucket[i] = ((key, value))
+    else:
+        bucket.append((key, value))
+
+
+def search(hash_table, key):
+    hash_key = hash(key) % len(hash_table)
+    bucket = hash_table[hash_key]
+    for i, kv in enumerate(bucket):
+        k, v = kv
+        if key == k:
+            return v
+    return False
+
+
+if __name__ == '__main__':
+    d = [[] for _ in range(20)]
     courser = 0
     commands = input()
     if int(commands) < 1 or int(commands) > 300000:
@@ -209,8 +235,10 @@ if __name__=='__main__':
             print(str1)
         elif cmd == "!":
             str = infixToPostfix(str)
-            if str in d:
-                print(d[str])
+            s = search(d, str)
+            if s:
+                print(s)
             else:
-                d[str] = int(postfixEval(str)) % (1000000007)
-                print(d[str])
+                calculate = int(postfixEval(str) % (1000000007))
+                insert(d, str, calculate)
+                print(calculate)
