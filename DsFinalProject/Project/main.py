@@ -44,7 +44,7 @@ def string_to_SLL(text, head):
 
 def insertAfter(courser, head, new_data):
     cur = head
-    i = 2
+    i = 1
     while i < courser:
         i += 1
         cur = cur.next
@@ -59,8 +59,8 @@ def insertAfter(courser, head, new_data):
         cur.next = new_node
     else:
         new_node = add(new_data)
-        new_node.next = cur.next.next
-        cur.next.next = new_node
+        new_node.next = cur.next
+        cur.next = new_node
     return head
 
 
@@ -71,7 +71,9 @@ def delete(courser, head):
         i += 1
         cur = cur.next
     if cur == head:
-        head.next = head.next.next
+        tmp=head.next
+        head.next=None
+        return tmp
     elif cur.next.next == None:
         cur.next = None
     else:
